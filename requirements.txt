@@ -1,4 +1,8 @@
 toml==0.10.2
-py-graph-imputation==0.1.1
+py-graph-imputation>=0.0.12
 py-ard==1.5.5
 tqdm==4.66.1
+bidict
+networkx
+numpy
+pandas
