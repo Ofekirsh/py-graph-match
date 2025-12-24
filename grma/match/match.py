@@ -298,6 +298,7 @@ def matching(
     verbose: bool = False,
     save_to_csv: bool = False,
     output_dir="output",
+    bdict: bidict = None,
 ):
     """
     A function that performs the patients imputation with the matching.
@@ -344,6 +345,7 @@ def matching(
         verbose,
         save_to_csv,
         output_dir=output_dir,
+        bdict=bdict,
     )
 
     return all_matches
