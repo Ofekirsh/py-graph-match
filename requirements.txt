@@ -6,3 +6,4 @@ bidict
 networkx
 numpy
 pandas
+cython

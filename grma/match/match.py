@@ -169,7 +169,6 @@ def find_matches(
     # print(len(wierd_edges))
 
     # print("------------------------------Fuck My Life-----------------------------------------------------------------")
-    # # code I add for amit checking
     # for patient, genos in g_m.patients.items():
     #     procces = set(g_m.patients_graph.predecessors(patient))
     #     if len(procces) != 1:

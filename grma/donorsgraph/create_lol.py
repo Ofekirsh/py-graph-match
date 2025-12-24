@@ -210,7 +210,7 @@ class LolBuilder:
         index_list,
         *,
         weight=None,
-        weights_list=None
+        weights_list=None,
     ):
         if space[node1] != -1:
             space[node1] += 1

@@ -104,9 +104,7 @@ class DonorsMatching(object):
     def __init__(self, graph: Graph, verbose: bool = False, bdict: bidict = None):
         self._graph: Graph = graph
         self._patients_graph: nx.DiGraph = nx.DiGraph()
-        self._genotype_candidates: Dict[
-            int, Dict[int, List[Tuple[float, int]]]
-        ] = {}  # AMIT ADD
+        self._genotype_candidates: Dict[int, Dict[int, List[Tuple[float, int]]]] = {}
         self.patients: Dict[int, Dict[int, HashableArray]] = {}
         self.verbose = verbose
         self.bidirectional_dict = bdict
@@ -193,9 +191,7 @@ class DonorsMatching(object):
                 # iterate over all the patients with the genotype
                 for patient_id in self._patients_graph.neighbors(geno):
                     # patient's geno index (the number of the geno in the imputation file)
-                    geno_num = self._patients_graph[geno][patient_id][
-                        "geno_num"
-                    ]  # AMIT DELETE
+                    geno_num = self._patients_graph[geno][patient_id]["geno_num"]
                     probability = self._patients_graph[geno][patient_id][
                         "probability"
                     ]  # patient's geno probability
@@ -208,7 +204,6 @@ class DonorsMatching(object):
                     # FINISH STUDY TEST CASE
 
                     # add the genotype id as a neighbor to the patient
-                    # AMIT ADD
                     if geno_candidate_id in self._genotype_candidates[patient_id]:
                         self._genotype_candidates[patient_id][geno_candidate_id][
                             geno_num
@@ -217,9 +212,7 @@ class DonorsMatching(object):
                         self._genotype_candidates[patient_id][geno_candidate_id] = {
                             geno_num: (probability, similarity)
                         }
-                    # AMIT END
 
-                    # AMIT DELETE
                     """
                     if geno_candidate_id in self._patients_graph.adj[patient_id]:
                         self._patients_graph[patient_id][geno_candidate_id]['weight'][geno_num] = [probability,
@@ -291,7 +284,6 @@ class DonorsMatching(object):
         create patients graph. \n
         *takes in consideration that grimm outputs for each patient different genotypes*
         """
-        # AMIT - DELETE 'geno_num' from weights, was unnecessary
         self._patients_graph: nx.DiGraph = nx.DiGraph()
         prob_dict: dict = {}  # {geno: [i, prob]}
         total_prob: float = 0
@@ -360,9 +352,7 @@ class DonorsMatching(object):
                 # initialize parameters
                 prob_dict = {}
                 total_prob = 0
-                self._genotype_candidates[
-                    patient_id
-                ] = {}  # AMIT ADD - initialize _genotype_candidates
+                self._genotype_candidates[patient_id] = {}
                 last_patient = patient_id
 
                 subclasses_by_patient[patient_id] = set()
@@ -519,7 +509,7 @@ class DonorsMatching(object):
             #     print("Patient ID:", patient_id, "has 'geno_num'")
             geno_num = self._patients_graph[geno][patient_id][
                 "geno_num"
-            ]  # patient's geno index # AMIT DELETE
+            ]  # patient's geno index
             probability = self._patients_graph[geno][patient_id][
                 "probability"
             ]  # patient's geno probability
@@ -530,10 +520,10 @@ class DonorsMatching(object):
 
             # This has to be a new edge because this is the first level (searching by genos),
             # and each patient connects only to their own genos, so we wouldn't override the weight dict.
-            # self._patients_graph.add_edge(patient_id, geno_id, weight={geno_num: [probability, 10]}) # AMIT DELETE
+            # self._patients_graph.add_edge(patient_id, geno_id, weight={geno_num: [probability, 10]})
             self._genotype_candidates[patient_id][geno_id] = {
                 geno_num: (probability, len(geno))
-            }  # AMIT ADD
+            }
             # else:
             #     print(f"Missing 'geno_num' for patient_id: {patient_id}")
             #     print("geno:", geno)
@@ -558,8 +548,8 @@ class DonorsMatching(object):
 
             # This has to be a new edge, because this is the first level (searching by genos),
             # and each patient connect only to his own genos, so we wouldn't override the weight dict.
-            # self._patients_graph.add_edge(patient_id, geno_id, weight={geno_num: [probability, 10]}) # AMIT DELETE
-            self._genotype_candidates[patient_id][geno_id] = [(geno_num, probability, 10)] # AMIT ADD
+            # self._patients_graph.add_edge(patient_id, geno_id, weight={geno_num: [probability, 10]}
+            self._genotype_candidates[patient_id][geno_id] = [(geno_num, probability, 10)]
 
         """
 
@@ -593,11 +583,9 @@ class DonorsMatching(object):
 
         # a loop that set the scores for all the matching candidates.
         patient_scores = {}
-        # for hla_id in self._patients_graph.neighbors(patient): # AMIT DELETE
-        for hla_id, genotype_matches in self._genotype_candidates[
-            patient
-        ].items():  # AMIT ADD
-            for prob, matches in genotype_matches.values():  # AMIT CHANGE
+        # for hla_id in self._patients_graph.neighbors(patient):
+        for hla_id, genotype_matches in self._genotype_candidates[patient].items():
+            for prob, matches in genotype_matches.values():
                 # match_info = (probability of patient's genotype, number of matches to patient's genotype)
                 if matches != num_alleles - mismatch:
                     continue
